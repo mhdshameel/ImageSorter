@@ -1,0 +1,14 @@
+﻿*.v2
+*.suo
+*.dll
+*.so
+*.dylib
+*.pdb
+*.cache
+*.g.cs
+*.baml
+*.i.cs
+*.exe
+*.CopyComplete
+obj
+bin
