@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using Ookii.Dialogs.Wpf;
@@ -15,6 +17,9 @@ namespace SortImagesIntoFolders.ViewModels
 	public class ShellViewModel : Screen
 	{
 		private string _BrowsedPath = "";
+		private BindableCollection<ImageDetailsModel> _ImageDetails = new BindableCollection<ImageDetailsModel>();
+		private ImageSource _firstImage;
+		private ImageSource _secondImage;
 
 		public string BrowsedPath
 		{
@@ -26,8 +31,6 @@ namespace SortImagesIntoFolders.ViewModels
 			}
 		}
 
-		private BindableCollection<ImageDetailsModel> _ImageDetails = new BindableCollection<ImageDetailsModel>();
-
 		public BindableCollection<ImageDetailsModel> ImageList
 		{
 			get { return _ImageDetails; }
@@ -38,8 +41,50 @@ namespace SortImagesIntoFolders.ViewModels
 			}
 		}
 
+		private PhotoCollectionModel photoModels;
+
+		public PhotoCollectionModel Photos
+		{
+			get { return photoModels; }
+			set { photoModels = value; }
+		}
+
+		private PhotoModel selectedphotoModel;
+
+		public PhotoModel SelectedPhoto
+		{
+			get { return selectedphotoModel; }
+			set 
+			{
+				selectedphotoModel = value;
+				NotifyOfPropertyChange(() => SelectedPhoto);
+			}
+		}
+
+		public ImageSource FirstImage
+		{
+			get { return _firstImage; }
+			set
+			{
+				_firstImage = value;
+				NotifyOfPropertyChange(() => FirstImage);
+			}
+		}
+
+		public ImageSource SecondImage
+		{
+			get { return _secondImage; }
+			set
+			{
+				_secondImage = value;
+				NotifyOfPropertyChange(() => SecondImage);
+			}
+		}
+
 		public ShellViewModel()
 		{
+			Photos = new PhotoCollectionModel();
+			Photos.Path = @"C:\Users\mohammed-4770\Pictures\Screenshots";
 		}
 
 		public void OpenFolder()
@@ -65,10 +110,13 @@ namespace SortImagesIntoFolders.ViewModels
 				return;
 			}
 
-            string[] supportedExtensions = new[] { ".bmp", ".jpeg", ".jpg", ".png", ".tiff" };
+			Photos.Path = BrowsedPath;
+
+			string[] supportedExtensions = new[] { ".bmp", ".jpeg", ".jpg", ".png", ".tiff" };
             var files = Directory.GetFiles(BrowsedPath, "*.*").Where(s => supportedExtensions.Contains(Path.GetExtension(s).ToLower()));
 
 			//List<ImageDetailsModel> images = new List<ImageDetailsModel>();
+			int count = 0;
 
 			foreach (var file in files)
             {
@@ -84,7 +132,20 @@ namespace SortImagesIntoFolders.ViewModels
                 img.CacheOption = BitmapCacheOption.OnLoad;
                 img.UriSource = new Uri(file, UriKind.Absolute);
                 img.EndInit();
-                id.Width = img.PixelWidth;
+
+				count++;
+
+				if (count == 1)
+				{
+					FirstImage = img;
+				}
+
+				if (count == 2)
+				{
+					SecondImage = img;
+				}
+
+				id.Width = img.PixelWidth;
                 id.Height = img.PixelHeight;
 
                 // I couldn't find file size in BitmapImage

@@ -7,9 +7,6 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Views\FolderWithImagePreviewView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\ShellView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -18,9 +15,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Views\FolderWithImagePreviewView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\ShellView.xaml">
       <SubType>Designer</SubType>
     </Page>
