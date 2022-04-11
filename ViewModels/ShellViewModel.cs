@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,8 @@ namespace SortImagesIntoFolders.ViewModels
 		private BindableCollection<ImageDetailsModel> _ImageDetails = new BindableCollection<ImageDetailsModel>();
 		private ImageSource _firstImage;
 		private ImageSource _secondImage;
+		private PhotoCollectionModel photoModels;
+		private PhotoModel selectedphotoModel;
 
 		public string BrowsedPath
 		{
@@ -41,15 +44,11 @@ namespace SortImagesIntoFolders.ViewModels
 			}
 		}
 
-		private PhotoCollectionModel photoModels;
-
 		public PhotoCollectionModel Photos
 		{
 			get { return photoModels; }
 			set { photoModels = value; }
 		}
-
-		private PhotoModel selectedphotoModel;
 
 		public PhotoModel SelectedPhoto
 		{
@@ -81,10 +80,30 @@ namespace SortImagesIntoFolders.ViewModels
 			}
 		}
 
+		[Import]
+		IWindowManager WindowManager { get; set; }
+
 		public ShellViewModel()
 		{
 			Photos = new PhotoCollectionModel();
 			Photos.Path = @"C:\Users\mohammed-4770\Pictures\Screenshots";
+
+			WindowManager = new WindowManager();
+		}
+
+		public void OnPhotoClick()
+		{
+			//var pvWindow = new PhotoViewerViewModel { SelectedPhoto = this.SelectedPhoto };
+			var pvWindow = new PhotoViewerViewModel();
+			pvWindow.SelectedPhoto = this.SelectedPhoto;
+			WindowManager.ShowWindowAsync(pvWindow, null, null);
+			//pvWindow.Show();
+		}
+
+		public void EditPhoto()
+		{
+			var pvWindow = new PhotoViewerViewModel { SelectedPhoto = this.SelectedPhoto };
+			//pvWindow.Show();
 		}
 
 		public void OpenFolder()

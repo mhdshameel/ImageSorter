@@ -6,10 +6,10 @@
         xmlns:cm="http://www.caliburnproject.org"
         xmlns:local="clr-namespace:SortImagesIntoFolders.Views" 
         xmlns:models="clr-namespace:SortImagesIntoFolders.Models" 
-        xmlns:viewmodels="clr-namespace:SortImagesIntoFolders.ViewModels" 
+        xmlns:viewmodels="clr-namespace:SortImagesIntoFolders.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}"
         mc:Ignorable="d"
-        Title="ShellView" Height="400" Width="600">
+        Title="ShellView" Height="500" Width="700">
     
     <Window.Resources>
         
@@ -228,6 +228,13 @@
                     SelectedIndex="0"
                     SelectedItem="{Binding SelectedPhoto, Mode=OneWayToSource}"
                     >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <cm:ActionMessage MethodName="OnPhotoClick">
+                                <!--<cal:Parameter Value="{Binding ElementName=Name, Path=Text}" />-->
+                            </cm:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
 
                     <ListBox.ContextMenu>
                         <ContextMenu>
