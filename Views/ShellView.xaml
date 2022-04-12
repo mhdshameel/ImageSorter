@@ -238,7 +238,7 @@
 
                     <ListBox.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Edit" />
+                            <MenuItem Header="Edit" cm:Message.Attach="EditPhoto"/>
                         </ContextMenu>
                     </ListBox.ContextMenu>
 
