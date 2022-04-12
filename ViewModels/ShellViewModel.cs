@@ -93,16 +93,14 @@ namespace SortImagesIntoFolders.ViewModels
 
 		public void OnPhotoClick()
 		{
-			//var pvWindow = new PhotoViewerViewModel { SelectedPhoto = this.SelectedPhoto };
-			var pvWindow = new PhotoViewerViewModel();
-			pvWindow.SelectedPhoto = this.SelectedPhoto;
+			var pvWindow = new PhotoViewerViewModel { SelectedPhoto = this.SelectedPhoto };
 			WindowManager.ShowWindowAsync(pvWindow, null, null);
-			//pvWindow.Show();
 		}
 
 		public void EditPhoto()
 		{
 			var pvWindow = new PhotoViewerViewModel { SelectedPhoto = this.SelectedPhoto };
+			WindowManager.ShowWindowAsync(pvWindow, null, null);
 			//pvWindow.Show();
 		}
 

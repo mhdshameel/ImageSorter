@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,12 +26,16 @@ namespace SortImagesIntoFolders.ViewModels
             }
 		}
 
+		public string ViewedCaption => Path.GetFileName(SelectedPhoto.Source);
+
+
 		public void Rotate()
         {
             BitmapSource img = SelectedPhoto.Image;
 
             var cache = new CachedBitmap(img, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
             SelectedPhoto.Image = BitmapFrame.Create(new TransformedBitmap(cache, new RotateTransform(90.0)));
+            NotifyOfPropertyChange(() => SelectedPhoto);
         }
 
         public void Crop()
@@ -42,6 +47,7 @@ namespace SortImagesIntoFolders.ViewModels
             SelectedPhoto.Image =
                 BitmapFrame.Create(new CroppedBitmap(img,
                     new Int32Rect((halfWidth - (halfWidth / 2)), (halfHeight - (halfHeight / 2)), halfWidth, halfHeight)));
+            NotifyOfPropertyChange(() => SelectedPhoto);
         }
 
         public void BlackAndWhite()
@@ -49,6 +55,7 @@ namespace SortImagesIntoFolders.ViewModels
             BitmapSource img = SelectedPhoto.Image;
             SelectedPhoto.Image =
                 BitmapFrame.Create(new FormatConvertedBitmap(img, PixelFormats.Gray8, BitmapPalettes.Gray256, 1.0));
+            NotifyOfPropertyChange(() => SelectedPhoto);
         }
     }
 }

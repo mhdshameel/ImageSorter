@@ -30,13 +30,13 @@
         <!-- Photo -->
         <Border Grid.Column="0" Grid.Row="0" Padding="4" Margin="4"
                 Background="White" BorderBrush="#22000000" BorderThickness="1">
-            <Image x:Name="SelectedPhoto" />
+            <Image x:Name="SelectedPhoto_Image" />
         </Border>
 
         <!-- Tools -->
         <Border Grid.Column="0" Grid.Row="1" Padding="4">
             <StackPanel Orientation="Horizontal">
-                <Label Name="ViewedCaption" HorizontalAlignment="Left" />
+                <Label x:Name="ViewedCaption" HorizontalAlignment="Left" />
                 <Button x:Name="Crop" Content="Crop" />
                 <Button x:Name="Rotate" Content="Rotate" />
                 <Button x:Name="BlackAndWhite" Content="BlackAndWhite" />
