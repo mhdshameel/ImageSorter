@@ -285,6 +285,21 @@
                Grid.Column="0" Grid.Row="1"
                />
 
+        <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Label>Subfolder:</Label>
+                <TextBox x:Name="SubfolderName" MinWidth="100"/>
+                <Button x:Name="CreateSubfolder" Content="Create"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="Subfolders"
+                          SelectedItem="{Binding SelectedSubfolder, Mode=OneWayToSource}"
+                          MinWidth="100"
+                          />
+                <Button x:Name="MoveToFolder" Content="Move to folder" Margin="10 0"/>
+            </StackPanel>
+        </StackPanel>
+
         <!-- Zoom Control -->
         <DockPanel x:Name="SliderPanel" Grid.Row="2" Grid.Column="1" Margin="5">
             <Label DockPanel.Dock="Left">Zoom:</Label>

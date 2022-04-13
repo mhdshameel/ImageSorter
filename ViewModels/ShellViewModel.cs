@@ -34,7 +34,14 @@ namespace SortImagesIntoFolders.ViewModels
 			{
 				_BrowsedPath = value;
 				NotifyOfPropertyChange(() => BrowsedPath);
+				Photos.Path = BrowsedPath;
 				PopulateFolderThumbnails();
+				Subfolders.Clear();
+				string[] subdirectoryEntries = Directory.GetDirectories(_BrowsedPath);
+				foreach (string subdirectory in subdirectoryEntries)
+				{
+					Subfolders.Add(subdirectory.Split('\\').Last().ToString());
+				}
 			}
 		}
 
@@ -124,13 +131,33 @@ namespace SortImagesIntoFolders.ViewModels
 			}
 		}
 
+		private string _selectedSubfolder;
+
+		public string SelectedSubfolder
+		{
+			get { return _selectedSubfolder; }
+			set 
+			{ 
+				_selectedSubfolder = value;
+				NotifyOfPropertyChange(() => SelectedSubfolder);
+			}
+		}
+
+		private BindableCollection<string> _subfolders = new BindableCollection<string>();
+
+		public BindableCollection<string> Subfolders
+		{
+			get { return _subfolders; }
+			set { _subfolders = value; }
+		}
+
 		[Import]
 		IWindowManager WindowManager { get; set; }
 
 		public ShellViewModel()
 		{
 			Photos = new PhotoCollectionModel();
-			Photos.Path = @"C:\Users\mohammed-4770\Pictures\Screenshots";
+			BrowsedPath = @"C:\Users\mohammed-4770\Pictures\Assist Screenshots";
 
 			WindowManager = new WindowManager();
 		}
@@ -171,10 +198,14 @@ namespace SortImagesIntoFolders.ViewModels
 				return;
 			}
 
-			Photos.Path = BrowsedPath;
         }
 
 		public void MoveToFolder()
+		{
+
+		}
+
+		public void CreateSubfolder()
 		{
 
 		}
