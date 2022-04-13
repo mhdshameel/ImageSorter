@@ -290,13 +290,13 @@
                 <Label>Subfolder:</Label>
                 <TextBox x:Name="SubfolderName" MinWidth="100"/>
                 <Button x:Name="CreateSubfolder" Content="Create"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="Subfolders"
-                          SelectedItem="{Binding SelectedSubfolder, Mode=OneWayToSource}"
+                          SelectedItem="{Binding SelectedSubfolder}"
                           MinWidth="100"
+                          Margin="10 0 0 0"
+                          SelectedIndex="0"
                           />
-                <Button x:Name="MoveToFolder" Content="Move to folder" Margin="10 0"/>
+                <Button x:Name="MoveToFolder" Content="Copy to folder" />
             </StackPanel>
         </StackPanel>
 

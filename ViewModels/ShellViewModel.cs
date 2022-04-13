@@ -42,6 +42,7 @@ namespace SortImagesIntoFolders.ViewModels
 				{
 					Subfolders.Add(subdirectory.Split('\\').Last().ToString());
 				}
+				SelectedSubfolder = Subfolders[0];
 			}
 		}
 
@@ -151,6 +152,18 @@ namespace SortImagesIntoFolders.ViewModels
 			set { _subfolders = value; }
 		}
 
+		private string _subfolderName;
+
+		/// <summary>
+		/// Prop for new subfoldername entered in the textbox
+		/// </summary>
+		public string SubfolderName
+		{
+			get { return _subfolderName; }
+			set { _subfolderName = value; }
+		}
+
+
 		[Import]
 		IWindowManager WindowManager { get; set; }
 
@@ -202,12 +215,35 @@ namespace SortImagesIntoFolders.ViewModels
 
 		public void MoveToFolder()
 		{
+			if (SelectedPhoto is null || String.IsNullOrEmpty(SelectedSubfolder)) 
+				return;
 
+			string DestinationPath = Path.GetDirectoryName(SelectedPhoto.Source) + $"\\{SelectedSubfolder}\\{SelectedPhoto.FileName}";
+
+			if (File.Exists(DestinationPath))
+			{
+				var res = MessageBox.Show($"File {DestinationPath} already exist. Do you want to overwrite it?", "File exists", MessageBoxButton.OKCancel);
+				if (MessageBoxResult.OK != res) return;
+			}
+
+			try
+			{
+				var tempPhoto = SelectedPhoto.Source;
+				Photos.Remove(SelectedPhoto);
+				File.Copy(tempPhoto, DestinationPath, true);
+				//File.Delete(tempPhoto);
+			}
+			catch (System.IO.IOException e)
+			{
+				MessageBox.Show("Check if the file is open in another application", "Error while moving the image");
+				return;
+			}
 		}
 
 		public void CreateSubfolder()
 		{
-
+			Directory.CreateDirectory(BrowsedPath + "\\" + SubfolderName);
+			Subfolders.Add(SubfolderName);
 		}
 
 		/*
