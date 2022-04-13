@@ -171,7 +171,7 @@ namespace SortImagesIntoFolders.ViewModels
 		public ShellViewModel()
 		{
 			Photos = new PhotoCollectionModel();
-			BrowsedPath = @"C:\Users\mohammed-4770\Pictures\Assist Screenshots";
+			//BrowsedPath = @"C:\Users\mohammed-4770\Pictures\Assist Screenshots";
 
 			WindowManager = new WindowManager();
 		}
