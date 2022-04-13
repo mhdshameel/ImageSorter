@@ -42,7 +42,8 @@ namespace SortImagesIntoFolders.ViewModels
 				{
 					Subfolders.Add(subdirectory.Split('\\').Last().ToString());
 				}
-				SelectedSubfolder = Subfolders[0];
+				if (Subfolders.Count > 0)
+					SelectedSubfolder = Subfolders[0];
 			}
 		}
 
