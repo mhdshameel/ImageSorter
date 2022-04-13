@@ -48,7 +48,7 @@ namespace SortImagesIntoFolders.Models
             Clear();
             try
             {
-                string[] supportedExtensions = new[] { ".bmp", ".jpeg", ".jpg", ".png", ".tiff" };
+                string[] supportedExtensions = new[] { ".bmp", ".jpeg", ".jpg", ".png", ".tiff", ".gif", ".webp" };
                 var files = _directory.GetFiles("*.*").Where(s => supportedExtensions.Contains(s.Extension.ToLower()));
                 foreach (var f in files)
                     Add(new PhotoModel(f.FullName));
