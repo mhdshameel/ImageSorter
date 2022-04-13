@@ -22,6 +22,10 @@ namespace SortImagesIntoFolders.ViewModels
 		private ImageSource _secondImage;
 		private PhotoCollectionModel photoModels;
 		private PhotoModel selectedphotoModel;
+		private Visibility _detailedListVisibility = Visibility.Collapsed;
+		private Visibility _thumbnailListVisibility = Visibility.Visible;
+		private bool _thumbnaillistview = true;
+		private bool _detailedlistview = false;
 
 		public string BrowsedPath
 		{
@@ -67,6 +71,56 @@ namespace SortImagesIntoFolders.ViewModels
 			{
 				_secondImage = value;
 				NotifyOfPropertyChange(() => SecondImage);
+			}
+		}
+
+		public bool ThumbnailListView
+		{
+			get { return _thumbnaillistview; }
+			set 
+			{ 
+				_thumbnaillistview = value;
+				if (_thumbnaillistview)
+				{
+					ThumbnailListVisibility = Visibility.Visible;
+					DetailedListVisibility = Visibility.Collapsed;
+				}
+				NotifyOfPropertyChange();
+			}
+		}
+
+		public bool DetailedListView
+		{
+			get { return _detailedlistview; }
+			set 
+			{ 
+				_detailedlistview = value;
+				if (_detailedlistview)
+				{
+					ThumbnailListVisibility = Visibility.Collapsed;
+					DetailedListVisibility = Visibility.Visible;
+				}
+				NotifyOfPropertyChange();
+			}
+		}
+
+		public Visibility DetailedListVisibility
+		{
+			get { return _detailedListVisibility; }
+			set
+			{
+				_detailedListVisibility = value;
+				NotifyOfPropertyChange();
+			}
+		}
+
+		public Visibility ThumbnailListVisibility
+		{
+			get { return _thumbnailListVisibility; }
+			set
+			{
+				_thumbnailListVisibility = value;
+				NotifyOfPropertyChange();
 			}
 		}
 
@@ -118,7 +172,6 @@ namespace SortImagesIntoFolders.ViewModels
 			}
 
 			Photos.Path = BrowsedPath;
-			PhotoDetailedListVisibility = Visibility.Visible;
         }
 
 		public void MoveToFolder()

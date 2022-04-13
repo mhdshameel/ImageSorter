@@ -211,61 +211,75 @@
                   DisplayMemberPath="Path"
                   />-->
 
-        <GroupBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" Visibility="Visible">
-            <ScrollViewer >
-                <ListBox ItemsSource="{Binding Photos}"
-                         SelectedItem="{Binding SelectedPhoto, Mode=OneWayToSource}"
-                         ItemTemplate="{StaticResource FileDetailsViewDataTemplate}"
-                         SelectedIndex="0"
-                         IsSynchronizedWithCurrentItem="True"
-                         >
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseDoubleClick">
-                            <cm:ActionMessage MethodName="OnPhotoClick">
-                                <!--<cal:Parameter Value="{Binding ElementName=Name, Path=Text}" />-->
-                            </cm:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
+        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" DockPanel.Dock="Top">
+                <Label Content="View: "/>
+                <StackPanel Orientation="Vertical">
+                    <RadioButton x:Name="ThumbnailListView" Content="Thumbnail" VerticalAlignment="Center" IsChecked="True"/>
+                    <RadioButton x:Name="DetailedListView" Content="Detailed" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
 
-                    <ListBox.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Edit" cm:Message.Attach="EditPhoto"/>
-                        </ContextMenu>
-                    </ListBox.ContextMenu>
-                </ListBox>
-            </ScrollViewer>
-        </GroupBox>
+            <GroupBox Grid.Row="1" Visibility="{Binding DetailedListVisibility}">
+                <ScrollViewer >
+                    <ListBox ItemsSource="{Binding Photos}"
+                             SelectedItem="{Binding SelectedPhoto, Mode=OneWayToSource}"
+                             ItemTemplate="{StaticResource FileDetailsViewDataTemplate}"
+                             SelectedIndex="0"
+                             IsSynchronizedWithCurrentItem="True"
+                             >
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <cm:ActionMessage MethodName="OnPhotoClick">
+                                    <!--<cal:Parameter Value="{Binding ElementName=Name, Path=Text}" />-->
+                                </cm:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
 
-        <GroupBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Visibility="Collapsed">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <ListBox
-                    IsSynchronizedWithCurrentItem="True"
-                    Name="PhotosListBox"
-                    Style="{StaticResource PhotoListBoxStyle}"
-                    Margin="5"
-                    SelectionMode="Extended"
-                    ItemsSource="{Binding Photos}"
-                    SelectedIndex="0"
-                    SelectedItem="{Binding SelectedPhoto, Mode=OneWayToSource}"
-                    ItemTemplate="{StaticResource ThumbnailViewDataTemplate}"
-                    >
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseDoubleClick">
-                            <cm:ActionMessage MethodName="OnPhotoClick">
-                                <!--<cal:Parameter Value="{Binding ElementName=Name, Path=Text}" />-->
-                            </cm:ActionMessage>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Edit" cm:Message.Attach="EditPhoto"/>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
+                </ScrollViewer>
+            </GroupBox>
 
-                    <ListBox.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Edit" cm:Message.Attach="EditPhoto"/>
-                        </ContextMenu>
-                    </ListBox.ContextMenu>
+            <GroupBox Grid.Row="1" Visibility="{Binding ThumbnailListVisibility}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <ListBox
+                        IsSynchronizedWithCurrentItem="True"
+                        Name="PhotosListBox"
+                        Style="{StaticResource PhotoListBoxStyle}"
+                        Margin="5"
+                        SelectionMode="Extended"
+                        ItemsSource="{Binding Photos}"
+                        SelectedIndex="0"
+                        SelectedItem="{Binding SelectedPhoto, Mode=OneWayToSource}"
+                        ItemTemplate="{StaticResource ThumbnailViewDataTemplate}"
+                        >
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <cm:ActionMessage MethodName="OnPhotoClick">
+                                    <!--<cal:Parameter Value="{Binding ElementName=Name, Path=Text}" />-->
+                                </cm:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
 
-                </ListBox>
-            </ScrollViewer>
-        </GroupBox>
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Edit" cm:Message.Attach="EditPhoto"/>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+
+                    </ListBox>
+                </ScrollViewer>
+            </GroupBox>
+        </Grid>
 
         <Image x:Name="SelectedPhoto_Image"
                Grid.Column="0" Grid.Row="1"
