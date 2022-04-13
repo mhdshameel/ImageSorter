@@ -13,8 +13,8 @@
     
     <Window.Resources>
         
-        <!-- Photo Template -->
-        <DataTemplate DataType="{x:Type models:PhotoModel}">
+        <!-- Photo Template for thumbnail view -->
+        <DataTemplate DataType="{x:Type models:PhotoModel}" x:Key="ThumbnailViewDataTemplate">
             <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="6">
                 <!-- Drop Shadow -->
                 <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="4"
@@ -39,7 +39,45 @@
                 </Border>
             </Grid>
         </DataTemplate>
-        
+
+        <!-- Photo Template for details view -->
+        <DataTemplate DataType="{x:Type models:PhotoModel}" x:Key="FileDetailsViewDataTemplate">
+            <Border BorderThickness="1" BorderBrush="#FFD0D1D7" Padding="5" Margin="10,10,10,0">
+                <StackPanel Orientation="Horizontal">
+                    <!--image and dimensions-->
+                    <Grid Width="88" Height="55">
+                        <Image Source="{Binding Source}"/>
+                        <TextBlock Background="#B2000000" Foreground="White" Height="16" TextAlignment="Center" VerticalAlignment="Bottom">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}x{1}">
+                                    <Binding Path="Height"/>
+                                    <Binding Path="Width"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Grid>
+                    <!--name, type and size-->
+                    <StackPanel Orientation="Vertical" Margin="5,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Name="ImageName" Margin="1" Foreground="#FF787878" Text="{Binding FileName}"/>
+                        <TextBlock Name="ImageType" Margin="1" Foreground="#FF787878">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="Type: {0}">
+                                    <Binding Path="Extension"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Name="ImageSize" Margin="1" Foreground="#FF787878">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="Size: {0} Bytes">
+                                    <Binding Path="Size"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+
         <!-- Main photo catalog view -->
         <Style TargetType="{x:Type ListBox}" x:Key="PhotoListBoxStyle">
             <Setter Property="Foreground" Value="White" />
@@ -173,50 +211,32 @@
                   DisplayMemberPath="Path"
                   />-->
 
-        <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" Visibility="Collapsed">
-            <ItemsControl ItemsSource="{Binding ImageList}"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderThickness="1" BorderBrush="#FFD0D1D7" Padding="5" Margin="10,10,10,0">
-                            <StackPanel Orientation="Horizontal">
-                                <!--image and dimensions-->
-                                <Grid Width="88" Height="55">
-                                    <Image Source="{Binding Path}"/>
-                                    <TextBlock Background="#B2000000" Foreground="White" Height="16" TextAlignment="Center" VerticalAlignment="Bottom">
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}{0}x{1}">
-                                                <Binding Path="Height"/>
-                                                <Binding Path="Width"/>
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                </Grid>
-                                <!--name, type and size-->
-                                <StackPanel Orientation="Vertical" Margin="5,0,0,0" VerticalAlignment="Center">
-                                    <TextBlock Name="ImageName" Margin="1" Foreground="#FF787878" Text="{Binding FileName}"/>
-                                    <TextBlock Name="ImageType" Margin="1" Foreground="#FF787878">
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="Type: {0}">
-                                                <Binding Path="Extension"/>
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                    <TextBlock Name="ImageSize" Margin="1" Foreground="#FF787878">
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="Size: {0} Bytes">
-                                                <Binding Path="Size"/>
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <GroupBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" Visibility="Visible">
+            <ScrollViewer >
+                <ListBox ItemsSource="{Binding Photos}"
+                         SelectedItem="{Binding SelectedPhoto, Mode=OneWayToSource}"
+                         ItemTemplate="{StaticResource FileDetailsViewDataTemplate}"
+                         SelectedIndex="0"
+                         IsSynchronizedWithCurrentItem="True"
+                         >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <cm:ActionMessage MethodName="OnPhotoClick">
+                                <!--<cal:Parameter Value="{Binding ElementName=Name, Path=Text}" />-->
+                            </cm:ActionMessage>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
 
-        <GroupBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Edit" cm:Message.Attach="EditPhoto"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                </ListBox>
+            </ScrollViewer>
+        </GroupBox>
+
+        <GroupBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Visibility="Collapsed">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <ListBox
                     IsSynchronizedWithCurrentItem="True"
@@ -227,6 +247,7 @@
                     ItemsSource="{Binding Photos}"
                     SelectedIndex="0"
                     SelectedItem="{Binding SelectedPhoto, Mode=OneWayToSource}"
+                    ItemTemplate="{StaticResource ThumbnailViewDataTemplate}"
                     >
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">

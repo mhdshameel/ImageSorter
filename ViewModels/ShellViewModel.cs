@@ -18,7 +18,6 @@ namespace SortImagesIntoFolders.ViewModels
 	public class ShellViewModel : Screen
 	{
 		private string _BrowsedPath = "";
-		private BindableCollection<ImageDetailsModel> _ImageDetails = new BindableCollection<ImageDetailsModel>();
 		private ImageSource _firstImage;
 		private ImageSource _secondImage;
 		private PhotoCollectionModel photoModels;
@@ -31,16 +30,7 @@ namespace SortImagesIntoFolders.ViewModels
 			{
 				_BrowsedPath = value;
 				NotifyOfPropertyChange(() => BrowsedPath);
-			}
-		}
-
-		public BindableCollection<ImageDetailsModel> ImageList
-		{
-			get { return _ImageDetails; }
-			set
-			{
-				_ImageDetails = value;
-				NotifyOfPropertyChange(() => ImageList);
+				PopulateFolderThumbnails();
 			}
 		}
 
@@ -128,27 +118,34 @@ namespace SortImagesIntoFolders.ViewModels
 			}
 
 			Photos.Path = BrowsedPath;
+			PhotoDetailedListVisibility = Visibility.Visible;
+        }
 
+		public void MoveToFolder()
+		{
+
+		}
+
+		/*
+		 * Huge issue here:
+		 * Heavy operation for a basic functionality - fix
+		 * See usage of EnumerateFiles instead of getfiles
+		 */
+		void PopulateFolderThumbnails()
+		{
 			string[] supportedExtensions = new[] { ".bmp", ".jpeg", ".jpg", ".png", ".tiff" };
-            var files = Directory.GetFiles(BrowsedPath, "*.*").Where(s => supportedExtensions.Contains(Path.GetExtension(s).ToLower()));
+			var files = Directory.GetFiles(BrowsedPath, "*.*").Where(s => supportedExtensions.Contains(Path.GetExtension(s).ToLower()));
 
 			//List<ImageDetailsModel> images = new List<ImageDetailsModel>();
 			int count = 0;
 
 			foreach (var file in files)
-            {
-                ImageDetailsModel id = new ImageDetailsModel()
-                {
-                    Path = file,
-                    FileName = Path.GetFileName(file),
-                    Extension = Path.GetExtension(file)
-                };
-
-                BitmapImage img = new BitmapImage();
-                img.BeginInit();
-                img.CacheOption = BitmapCacheOption.OnLoad;
-                img.UriSource = new Uri(file, UriKind.Absolute);
-                img.EndInit();
+			{
+				BitmapImage img = new BitmapImage();
+				img.BeginInit();
+				img.CacheOption = BitmapCacheOption.OnLoad;
+				img.UriSource = new Uri(file, UriKind.Absolute);
+				img.EndInit();
 
 				count++;
 
@@ -160,16 +157,9 @@ namespace SortImagesIntoFolders.ViewModels
 				if (count == 2)
 				{
 					SecondImage = img;
+					break;
 				}
-
-				id.Width = img.PixelWidth;
-                id.Height = img.PixelHeight;
-
-                // I couldn't find file size in BitmapImage
-                FileInfo fi = new FileInfo(file);
-                id.Size = fi.Length;
-                ImageList.Add(id);
 			}
-        }
+		}
 	}
 }
