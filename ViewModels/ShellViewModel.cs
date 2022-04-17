@@ -245,6 +245,7 @@ namespace SortImagesIntoFolders.ViewModels
 		{
 			Directory.CreateDirectory(BrowsedPath + "\\" + SubfolderName);
 			Subfolders.Add(SubfolderName);
+			SelectedSubfolder = SubfolderName;
 		}
 
 		/*
