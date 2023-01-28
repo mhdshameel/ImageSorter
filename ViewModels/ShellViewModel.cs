@@ -161,7 +161,11 @@ namespace SortImagesIntoFolders.ViewModels
 		public string SubfolderName
 		{
 			get { return _subfolderName; }
-			set { _subfolderName = value; }
+			set 
+			{ 
+				_subfolderName = value;
+				NotifyOfPropertyChange(() => CanCreateSubfolder);
+			}
 		}
 
 
@@ -214,9 +218,14 @@ namespace SortImagesIntoFolders.ViewModels
 
         }
 
-		public void MoveToFolder()
+		public bool CanMoveToFolder(PhotoModel selectedPhoto, string selectedSubfolder)
 		{
-			if (SelectedPhoto is null || String.IsNullOrEmpty(SelectedSubfolder)) 
+			return !(selectedPhoto is null || string.IsNullOrEmpty(selectedSubfolder));
+		}
+		
+		public void MoveToFolder(PhotoModel selectedPhoto, string selectedSubfolder)
+		{
+			if (SelectedPhoto is null || string.IsNullOrEmpty(SelectedSubfolder)) 
 				return;
 
 			string DestinationPath = Path.GetDirectoryName(SelectedPhoto.Source) + $"\\{SelectedSubfolder}\\{SelectedPhoto.FileName}";
@@ -238,6 +247,14 @@ namespace SortImagesIntoFolders.ViewModels
 			{
 				MessageBox.Show("Check if the file is open in another application", "Error while moving the image");
 				return;
+			}
+		}
+
+		public bool CanCreateSubfolder 
+		{
+			get
+			{
+				return !string.IsNullOrWhiteSpace(SubfolderName) && !string.IsNullOrWhiteSpace(BrowsedPath);
 			}
 		}
 
