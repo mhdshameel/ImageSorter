@@ -243,7 +243,7 @@ namespace SortImagesIntoFolders.ViewModels
 				File.Copy(tempPhoto, DestinationPath, true);
 				//File.Delete(tempPhoto);
 			}
-			catch (System.IO.IOException e)
+			catch (IOException)
 			{
 				MessageBox.Show("Check if the file is open in another application", "Error while moving the image");
 				return;
