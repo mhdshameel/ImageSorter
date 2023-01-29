@@ -12,6 +12,8 @@ I created the application basically to learn more about the dotnet WPF technolog
 Also planning to bring in more features if this works out well.
 
 ## Usage:
+[Here](https://drive.google.com/file/d/1in1zf1M5ZuHHINVBQYajiX0Yy-wP39MC/view?usp=sharing) is a demo video which covers all the existing functionalities.
+
 ![image](https://user-images.githubusercontent.com/16662695/215321123-aaeb0699-5db3-4680-813e-965330870104.png)
 Open a folder using the top right open button and browsing to a directory that contains images.
 
