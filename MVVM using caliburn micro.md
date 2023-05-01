@@ -1,4 +1,4 @@
-MVVM using Caliurn Micro:
+## MVVM using Caliurn Micro:
 Creating a single window application and binding controls to properties and methods using naming convention was staright forward.
 
 Challenges:
