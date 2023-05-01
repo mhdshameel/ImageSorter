@@ -1,12 +1,13 @@
 ## MVVM using Caliurn Micro:
 Creating a single window application and binding controls to properties and methods using naming convention was staright forward.
 
-Challenges:
+### Challenges:
 1. When introducing a second view, especially a usercontrol to be used in the first view, I was not able to hook up the view model to the view or vice versa :
-	Caliburn Micro prefers ViewModel first approach. 
+
+Caliburn Micro prefers ViewModel first approach. 
 	That is ViewModel is first constructed then the caliburn micro view locator locates the view and constructs it.
-	This is what we do in the bootstrapper class, we inform the framework using DisplayRootViewFor in OnStartup method to boot up with the corresponding view model, the locater identifes and initializes the view.
-	In case of usercontrol view we need a way to initialize the viewmodel and view. In case of ViewModel first approach, we need to create a prop of that usercontrol's ViewModel in the mainviewmodel (where we need to use the usercontrol) and add a ContentControl in the view with x:Name key same as the prop, this will initialize the view and hook up the viewmodel and view together
+	This is what we do in the bootstrapper class, we inform the framework using `DisplayRootViewFor` in `OnStartup` method to boot up with the corresponding view model, the locater identifes and initializes the view.
+	In case of usercontrol view we need a way to initialize the viewmodel and view. In case of ViewModel first approach, we need to create a prop of that usercontrol's ViewModel in the mainviewmodel (where we need to use the usercontrol) and add a ContentControl in the view with `x:Name` key same as the prop, this will initialize the view and hook up the viewmodel and view together
 	
 	Problem in this approach:
 	In design time I am unable to view the usercontrol in the designer
@@ -18,11 +19,11 @@ Challenges:
 	
 	Tried the view first approach from the same article referenced above, were able to solve the design time no preview problem.
 	It involves:
-	0. in xaml of the main view, include the usercontrol's view and bind to the vm using cm:Bind.Model where xmlns:cm="http://www.caliburnproject.org"
-	1. Creating a resource in the usercontrol of the viewmodel. 
-	2. Setting the root element's DataContext to this resource.
-	3. And in the code behind (xaml.cs) add a prop of the viewmodel type and initialize it to the DataContext of the root (vm = (FolderWithImagePreviewViewModel)this.rootGrid.DataContext;)
-	4. Add a wrapper property for the prop in viewmodel
+	1. in xaml of the main view, include the usercontrol's view and bind to the vm using cm:Bind.Model where `xmlns:cm="http://www.caliburnproject.org"`
+	2. Creating a resource in the usercontrol of the viewmodel. 
+	3. Setting the root element's DataContext to this resource.
+	4. And in the code behind (xaml.cs) add a prop of the viewmodel type and initialize it to the `DataContext` of the root as ```vm = (FolderWithImagePreviewViewModel)this.rootGrid.DataContext;```
+	5. Add a wrapper property for the prop in viewmodel
 	
 	Problems with this approach:
 	1. First of all there are lot of code behind
